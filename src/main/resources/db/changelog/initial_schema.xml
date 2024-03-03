@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create news table" author="antont">
+        <createTable tableName="news">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="headline" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="time" type="DATETIME">
+                <constraints nullable="false" />
+            </column>
+            <column name="link" type="varchar(255)">
+                <constraints nullable="false" unique="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create news_parser_configs table" author="antont">
+        <createTable tableName="news_parser_configs">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="site_link" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="body" type="varchar(64)">
+                <constraints nullable="false" />
+            </column>
+            <column name="headline" type="varchar(64)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(64)">
+                <constraints nullable="false" />
+            </column>
+            <column name="time" type="varchar(64)">
+                <constraints nullable="false" />
+            </column>
+            <column name="page_link" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="time_format" type="varchar(64)">
+                <constraints nullable="false" />
+            </column>
+            <column name="locale" type="varchar(16)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="insert initial data to news_parser_configs table" author="antont">
+        <insert tableName="news_parser_configs">
+            <column name="site_link" value="https://mil.in.ua/uk/news/" />
+            <column name="body" value=".sidebar-news" />
+            <column name="headline" value=".sidebar-news__name" />
+            <column name="description" value=".sidebar-news__description" />
+            <column name="time" value=".sidebar-news__date" />
+            <column name="page_link" value=".sidebar-news" />
+            <column name="time_format" value="HH:mm dd/MM" />
+            <column name="locale" value="uk" />
+        </insert>
+        <insert tableName="news_parser_configs">
+            <column name="site_link" value="https://www.ukrinform.ua/rubric-ato" />
+            <column name="body" value=".analitic div.analiticBody div" />
+            <column name="headline" value=".analiticText" />
+            <column name="description" value=".analiticName" />
+            <column name="time" value=".analiticDate" />
+            <column name="page_link" value="div a" />
+            <column name="time_format" value="dd.MM.yyyy HH:mm ·" />
+            <column name="locale" value="uk" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
