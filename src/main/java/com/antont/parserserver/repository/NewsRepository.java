@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface NewsRepository extends JpaRepository<News, Integer> {
-
     @Query("SELECT  n.time FROM News n ORDER BY n.time DESC limit 1")
     Optional<LocalDateTime> findTimeOfLatestNews();
 
