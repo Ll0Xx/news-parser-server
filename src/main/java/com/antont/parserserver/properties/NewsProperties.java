@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "schedule.news-parsing")
-public class ScheduleProperties {
+@ConfigurationProperties(prefix = "rest.news")
+public class NewsProperties {
     @NotNull
     @Min(0)
-    private Integer delayMinutes;
+    private String dateTimeFormat;
 
 }
