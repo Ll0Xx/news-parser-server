@@ -5,10 +5,15 @@ import com.antont.parserserver.dto.UpdateNewsDto;
 import com.antont.parserserver.entity.News;
 import com.antont.parserserver.properties.NewsProperties;
 import com.antont.parserserver.repository.NewsRepository;
+import com.antont.parserserver.repository.PageableNewsRepository;
 import com.antont.parserserver.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,12 +23,13 @@ import java.util.Optional;
 @Service
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
-
+    private final PageableNewsRepository pageableNewsRepository;
     private final NewsProperties newsProperties;
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsService.class);
 
-    public NewsServiceImpl(NewsRepository newsRepository, NewsProperties newsProperties) {
+    public NewsServiceImpl(NewsRepository newsRepository, PageableNewsRepository pageableNewsRepository, NewsProperties newsProperties) {
         this.newsRepository = newsRepository;
+        this.pageableNewsRepository = pageableNewsRepository;
         this.newsProperties = newsProperties;
     }
 
@@ -40,6 +46,12 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public Optional<News> read(Integer id) {
         return newsRepository.findById(id);
+    }
+
+    @Override
+    public Page<News> readPageable(Integer page, Integer size) {
+        Pageable paging = PageRequest.of(page, size);
+        return pageableNewsRepository.findAll(paging);
     }
 
     @Override

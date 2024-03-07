@@ -7,8 +7,11 @@ import com.antont.parserserver.service.NewsService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.print.Pageable;
 
 @RestController
 @RequestMapping("news")
@@ -37,6 +40,18 @@ public class NewsRestController {
             return ResponseEntity.of(newsService.read(id));
         } catch (Exception e) {
             LOGGER.error(String.format("Unable to read news record with id %s", id), e);
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<News>> readPageable(@RequestParam(defaultValue = "0") Integer page,
+                                                   @RequestParam(defaultValue = "10") Integer size) {
+        try {
+            return ResponseEntity.ok(newsService.readPageable(page, size));
+        } catch (Exception e) {
+            LOGGER.error(String.format("Unable to read news page %s with page size %s", page, size), e);
             return ResponseEntity.badRequest().build();
         }
 
